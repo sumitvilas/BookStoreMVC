@@ -1,7 +1,18 @@
+using BookStoreMVC.Models.Domain;
+using BookStoreMVC.Repositories.Abstract;
+using BookStoreMVC.Repositories.Implementation;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+builder.Services.AddScoped<IGenreService, GenreService>();
+
+
+
 
 var app = builder.Build();
 
@@ -22,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Genre}/{action=Add}/{id?}");
 
 app.Run();
